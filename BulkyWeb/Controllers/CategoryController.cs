@@ -13,5 +13,11 @@
 
             return View(categoryList);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
     }
 }
