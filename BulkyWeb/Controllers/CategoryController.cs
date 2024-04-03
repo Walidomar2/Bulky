@@ -19,5 +19,13 @@
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Create(Category categoryModel)
+        {
+            _context.Categories.Add(categoryModel); 
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
