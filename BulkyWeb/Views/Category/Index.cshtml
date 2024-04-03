@@ -1,1 +1,23 @@
-﻿<h1> Category Index Test </h1>
+﻿@model List<Category>
+
+<table class="table table-bordered table-striped">
+    <thead>  
+        <tr>
+            <th>
+                Category Name
+            </th>
+            <th>
+                Display Order
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(u=>u.DisplayOrder))
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.DisplayOrder</td>
+             </tr>
+        }
+    </tbody>
+</table>
