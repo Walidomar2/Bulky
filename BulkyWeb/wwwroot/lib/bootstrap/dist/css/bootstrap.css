@@ -3672,6 +3672,23 @@ textarea.form-control-lg {
     text-decoration: underline;
 }
 
+.btn_gray {
+    background-color: #ccc; /* Gray background color */
+    color: #fff; /* Text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor style */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display as inline block */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+    .btn_gray:hover {
+        background-color: #999; /* Darker gray on hover */
+    }
+
     .btn-link:focus-visible {
         color: var(--bs-btn-color);
     }
