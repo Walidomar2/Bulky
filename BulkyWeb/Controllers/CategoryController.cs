@@ -24,8 +24,9 @@
         {
             if(categoryModel.Name == categoryModel.DisplayOrder.ToString())
             {
-                ModelState.AddModelError("name", "The Display Order can't exactly match the Name");
+                ModelState.AddModelError("","The Display Order can't exactly match the Name");
             }
+
             if(!ModelState.IsValid)
                 return View();
 
