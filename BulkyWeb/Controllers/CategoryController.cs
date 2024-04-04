@@ -32,6 +32,7 @@
 
             _context.Categories.Add(categoryModel); 
             _context.SaveChanges();
+            TempData["success"] = "Category Created Successfully";
             return RedirectToAction(nameof(Index));
         }
 
@@ -60,7 +61,7 @@
 
             _context.Categories.Update(categoryModel);
             _context.SaveChanges();
-
+            TempData["success"] = "Category Updated Successfully";
             return RedirectToAction(nameof(Index));
         }
 
@@ -89,6 +90,7 @@
 
             _context.Categories.Remove(category);
             _context.SaveChanges();
+            TempData["success"] = "Category Deleted Successfully";
             return RedirectToAction(nameof(Index));
         }
 
