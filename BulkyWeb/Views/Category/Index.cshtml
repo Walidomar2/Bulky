@@ -39,7 +39,7 @@
                                 <i class="bi bi-pencil-square"></i>
                             </a>
 
-                            <a asp-controller="Category" asp-action="Delete" class="btn btn-danger mx-2" title="delete">
+                            <a asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger mx-2" title="delete">
                                 <i class="bi bi-trash-fill"></i>
                             </a>
                         </div>
