@@ -1,7 +1,8 @@
 ﻿using Bulky.DataAccess.Repository.IRepository;
 
-namespace BulkyWeb.Controllers
+namespace BulkyWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         //private readonly ApplicationDbContext _context;
@@ -9,7 +10,7 @@ namespace BulkyWeb.Controllers
 
         public CategoryController(ICategoryRepository categoryRepository)
         {
-            _categoryRepository = categoryRepository; 
+            _categoryRepository = categoryRepository;
         }
         public IActionResult Index()
         {
@@ -25,15 +26,15 @@ namespace BulkyWeb.Controllers
         [HttpPost]
         public IActionResult Create(Category categoryModel)
         {
-            if(categoryModel.Name == categoryModel.DisplayOrder.ToString())
+            if (categoryModel.Name == categoryModel.DisplayOrder.ToString())
             {
-                ModelState.AddModelError("","The Display Order can't exactly match the Name");
+                ModelState.AddModelError("", "The Display Order can't exactly match the Name");
             }
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return View();
 
-            _categoryRepository.Add(categoryModel); 
+            _categoryRepository.Add(categoryModel);
             _categoryRepository.Save();
 
             TempData["success"] = "Category Created Successfully";
@@ -47,7 +48,7 @@ namespace BulkyWeb.Controllers
 
             var category = _categoryRepository.Get(c => c.Id == id);
 
-            if(category == null)
+            if (category == null)
             {
                 return NotFound();
             }
@@ -58,7 +59,7 @@ namespace BulkyWeb.Controllers
         [HttpPost]
         public IActionResult Edit(Category categoryModel)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
@@ -84,9 +85,9 @@ namespace BulkyWeb.Controllers
             return View(category);
         }
 
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int id)
-        {   
+        {
             var category = _categoryRepository.Get(x => x.Id == id);
 
             if (category == null)
