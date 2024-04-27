@@ -1,5 +1,8 @@
 ﻿using Bulky.DataAccess.Repository;
 using Bulky.DataAccess.Repository.IRepository;
+using Bulky.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
@@ -8,30 +11,46 @@ namespace BulkyWeb.Areas.Admin.Controllers
     {
         //private readonly ApplicationDbContext _context;
         private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository,
+            ICategoryRepository categoryRepository)
         {
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
         public IActionResult Index()
         {
             var productList = _productRepository.GetAll();
+
             return View(productList);
         }
 
         public IActionResult Create()
         {
-            return View();
+            ProductVM productVM = new()
+            {
+                CategoryList = _categoryRepository.GetAll()
+                .ToList()
+               .Select(u => new SelectListItem
+               {
+                   Text = u.Name,
+                   Value = u.Id.ToString()
+               }),
+                Product = new Product()
+        };
+
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult Create(Product productModel)
+        public IActionResult Create(ProductVM productModel)
         {
            
             if (!ModelState.IsValid)
                 return View();
 
-            _productRepository.Add(productModel);
+            _productRepository.Add(productModel.Product);
             _productRepository.Save();
 
             TempData["success"] = "Product Created Successfully";
