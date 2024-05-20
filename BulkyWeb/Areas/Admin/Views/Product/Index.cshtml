@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <table class="table table-bordered table-striped">
+        <table id="tblData" class="table table-bordered table-striped style="width:100%">
             <thead>
                 <tr>
                     <th> Title </th>
@@ -31,30 +31,11 @@
                     <th> Category </th>
                     <th></th>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Title</td>
-                        <td>@item.ISBN</td>
-                        <td>@item.ListPrice</td>
-                        <td>@item.Author</td>
-                        <td>@item.Category.Name</td>
-                        <td>
-                            <div class="w-75" btn-group role="group">
-                                <a asp-controller="Product" asp-action="Upsert" asp-route-id="@item.Id" class="btn btn-primary mx-2" title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-
-                                <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger mx-2" title="delete">
-                                    <i class="bi bi-trash-fill"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
+            </thead>       
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/product.js"></script>
+}
