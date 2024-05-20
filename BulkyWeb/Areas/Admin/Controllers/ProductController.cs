@@ -11,13 +11,16 @@ namespace BulkyWeb.Areas.Admin.Controllers
     {
         //private readonly ApplicationDbContext _context;
         private readonly IProductRepository _productRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ICategoryRepository _categoryRepository;
 
         public ProductController(IProductRepository productRepository,
-            ICategoryRepository categoryRepository)
+            ICategoryRepository categoryRepository,
+            IWebHostEnvironment webHostEnvironment)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -60,28 +63,47 @@ namespace BulkyWeb.Areas.Admin.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            _productRepository.Add(productModel.Product);
-            _productRepository.Save();
-
-            TempData["success"] = "Product Created Successfully";
-            return RedirectToAction(nameof(Index));
-        }
-
-       
-        [HttpPost]
-        public IActionResult Edit(Product productModel)
-        {
-            if (!ModelState.IsValid)
+            if(img != null)
             {
-                return View();
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                string imgName = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
+                string imgPath = Path.Combine(wwwRootPath, @"images\product");
+
+                // in case you update the image
+                if(!string.IsNullOrEmpty(productModel.Product.ImageUrl))
+                {
+                    var oldImgPath = 
+                        Path.Combine(wwwRootPath,productModel.Product.ImageUrl.TrimStart('\\'));
+
+                    if (System.IO.File.Exists(oldImgPath))
+                    {
+                        System.IO.File.Delete(oldImgPath);
+                    }
+                }
+
+                using (var fileStream = new FileStream(Path.Combine(imgPath,imgName),FileMode.Create))
+                {
+                    img.CopyTo(fileStream);
+                }
+
+                productModel.Product.ImageUrl = @"\images\product\" + imgName;
             }
 
-            _productRepository.Update(productModel);
+            if(productModel.Product.Id == 0)
+            {
+                _productRepository.Add(productModel.Product);
+                TempData["success"] = "Product Created Successfully";
+               
+            }
+            else
+            {
+                _productRepository.Update(productModel.Product);
+                TempData["success"] = "Product Updated Successfully";
+            }
             _productRepository.Save();
-            TempData["success"] = "Product Updated Successfully";
             return RedirectToAction(nameof(Index));
         }
-
+     
         public IActionResult Delete(int id)
         {
             if (id == 0)
