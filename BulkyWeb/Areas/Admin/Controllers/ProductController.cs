@@ -24,7 +24,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            var productList = _productRepository.GetAll();
+            var productList = _productRepository.GetAll(includeProperties: "Category");
 
             return View(productList);
         }
